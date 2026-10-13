@@ -53,7 +53,7 @@ export function HomeScene({
 
   useEffect(() => {
     const section = ref.current;
-    if (!section || scene === "ending") return;
+    if (!section) return;
     const stage = section.querySelector<HTMLElement>(".scene-stage")!;
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
     const desktop = window.matchMedia(
@@ -70,6 +70,7 @@ export function HomeScene({
 
     function clear() {
       observer?.disconnect();
+      section!.style.removeProperty("--chapter-entry");
       section!.style.removeProperty("--chapter-exit");
       section!.style.removeProperty("--chapter-crop");
       for (const { element } of items) {
@@ -83,12 +84,36 @@ export function HomeScene({
       frame = 0;
       if (mode !== "desktop") return;
       const rect = section!.getBoundingClientRect();
-      // The progress range is precisely the native sticky hold, with a pause
-      // at its end before the composition leaves with the document flow.
-      const progress = clamp(
-        -rect.top / Math.max(1, rect.height - stage.offsetHeight),
+      const hold = Math.max(0, rect.height - stage.offsetHeight);
+      // Adjacent sections share a short stretch of document flow. Start the
+      // incoming composition while the previous one is still the protagonist,
+      // and finish assembling before this scene starts its own handoff.
+      const previous = section!.previousElementSibling as HTMLElement | null;
+      const previousStage =
+        previous?.querySelector<HTMLElement>(".scene-stage");
+      let entrance = window.innerHeight * 0.82;
+      if (previous?.dataset.motion === "desktop" && previousStage) {
+        const previousRect = previous.getBoundingClientRect();
+        const previousHold = Math.max(
+          0,
+          previousRect.height - previousStage.offsetHeight,
+        );
+        // The next composition begins at 78% of the outgoing sticky hold,
+        // including the Hero's header offset and shorter viewport heights.
+        entrance = rect.top - previousRect.top - previousHold * 0.78;
+      }
+      const entry = ease(
+        clamp((entrance - rect.top) / (window.innerHeight * 0.12)),
       );
-      const exit = ease(clamp((progress - 0.28) / 0.66));
+      const progress = clamp(
+        (entrance - rect.top) / Math.max(1, entrance + hold * 0.7),
+      );
+      const holdProgress = clamp(-rect.top / Math.max(1, hold));
+      const exit = ease(clamp((holdProgress - 0.28) / 0.66));
+      section!.style.setProperty(
+        "--chapter-entry",
+        scene === "hero" ? "1" : entry.toFixed(4),
+      );
       section!.style.setProperty("--chapter-exit", exit.toFixed(4));
       section!.style.setProperty(
         "--chapter-crop",
