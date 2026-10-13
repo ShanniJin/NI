@@ -1,0 +1,5 @@
+import Link from "next/link";
+import {Photo} from "@/components/Visuals";
+import {articleHref} from "@/lib/notes";
+export const metadata={title:"Images"};
+export default function Images(){return <div className="page-width inner-page images-page"><div className="page-intro"><span className="eyebrow">FROM THE CAMERA</span><h1>The quiet<br/><span className="serif italic">in between.</span></h1><p>Light, texture, and the feeling of being somewhere.</p></div><Photo className="images-cover" name="mountains" alt="A mountain range in soft blue light"/><div className="photo-caption"><span>01 / DISTANCE</span><span>Placeholder photo collection</span></div><div className="images-pair"><figure><Photo name="sample2_1280" alt="Sunlit coastal cliffs"/><figcaption>02 / THE LONG WAY</figcaption></figure><figure><Photo name="sample1_1280" alt="Dew on a petal"/><figcaption>03 / UP CLOSE</figcaption></figure></div><figure className="images-last"><Photo name="dome" alt="Light and geometry in a glass roof"/><figcaption>04 / LOOKING UP</figcaption></figure><Link className="text-link" href={articleHref}>Related Field Note →</Link></div>}

@@ -1,0 +1,3 @@
+import {WallComposition} from "@/components/Wall";
+export const metadata={title:"Wall"};
+export default function Wall(){return <div className="wall-page"><div className="page-width inner-page"><div className="page-intro"><span className="eyebrow">YOU’VE FOUND ANOTHER ROOM</span><h1>The Wall<span className="small-star">✳︎</span></h1><p>A few words, a little picture, a trace of being here.</p><span className="prototype-label">A static study · sample notes for now</span></div><WallComposition/><div className="wall-closing"><span className="eyebrow">LEAVE SOMETHING HERE</span><p>One day, this will be a place for your little notes, too.</p><span className="small-caption">For now, feel free to wander.</span></div></div></div>}
