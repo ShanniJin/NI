@@ -1,0 +1,172 @@
+/* Homepage-only choreography. Shared boards, photography, and detail pages
+   retain their original styles and compositions. */
+.home-scroll .home-scene {
+  position: relative;
+  background: var(--paper);
+  scroll-margin-top: 0;
+}
+.home-scroll .home-scene--wall {
+  background: var(--cream);
+}
+.home-scroll .scene-stage {
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(36px, 6svh, 72px) 0;
+}
+.home-scroll .section {
+  border-top: 0;
+  padding: 0;
+}
+.home-scroll .wall-band {
+  padding: 0;
+}
+.home-scroll .home-about {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+.home-scroll .home-scene--hero .scene-stage {
+  padding: 0;
+  justify-content: flex-start;
+}
+.home-scroll .hero {
+  min-height: calc(100svh - 108px);
+}
+.home-scroll .home-scene--ending .scene-stage {
+  min-height: 100svh;
+}
+
+@media (min-width: 1001px) and (min-height: 700px) {
+  .home-scroll .home-scene[data-motion="desktop"] {
+    min-height: 160svh;
+  }
+  .home-scroll .home-scene--hero[data-motion="desktop"] {
+    min-height: calc(160svh - 108px);
+  }
+  .home-scroll .home-scene--wall[data-motion="desktop"] {
+    min-height: 175svh;
+  }
+  .home-scroll [data-motion="desktop"] .scene-stage {
+    position: sticky;
+    top: 0;
+  }
+  .home-scroll .hero {
+    padding-top: clamp(65px, 10.7svh, 107px);
+  }
+  .home-scroll .hero-image .photo {
+    height: min(400px, 39svh);
+  }
+  .home-scroll .camera-grid > .photo {
+    height: min(520px, 58svh);
+  }
+  .home-scroll .note-feature .photo {
+    height: min(310px, 31svh);
+  }
+  .home-scroll .note-photo .photo {
+    height: min(210px, 21svh);
+  }
+  .home-scroll [data-motion="desktop"] [data-scene-item] {
+    opacity: var(--chapter-reveal, 1);
+    translate: 0 calc((1 - var(--chapter-reveal, 1)) * 18px);
+  }
+  .home-scroll .home-scene--wall[data-motion="desktop"] [data-scene-item] {
+    translate: 0 calc((1 - var(--chapter-reveal, 1)) * 22px);
+  }
+  .home-scroll .home-scene--camera[data-motion="desktop"] [data-scene-item] {
+    translate: 0 calc((1 - var(--chapter-reveal, 1)) * 8px);
+  }
+  .home-scroll .home-scene--practice[data-motion="desktop"] .tree {
+    opacity: calc(var(--chapter-reveal, 1) * 0.7);
+  }
+  .home-scroll .home-scene--hero[data-motion="desktop"] .hero-copy {
+    opacity: calc(1 - var(--chapter-exit, 0) * 0.18);
+    translate: 0 calc(var(--chapter-exit, 0) * -24px);
+  }
+  .home-scroll .home-scene--hero[data-motion="desktop"] .hero-image img {
+    scale: calc(1 + var(--chapter-exit, 0) * 0.015);
+    translate: 0 calc(var(--chapter-exit, 0) * -8px);
+  }
+  .home-scroll .home-scene--hero[data-motion="desktop"] .hero-sun {
+    translate: calc(var(--chapter-exit, 0) * 8px)
+      calc(var(--chapter-exit, 0) * -12px);
+  }
+  .home-scroll
+    .home-scene--practice[data-motion="desktop"]
+    .practice-grid
+    > .photo
+    img {
+    scale: calc(1 + var(--chapter-crop, 0) * 0.018);
+    translate: 0 calc(var(--chapter-crop, 0) * 4px);
+  }
+}
+
+/* Tablet, mobile, and short screens use regular document flow. */
+@media (max-width: 1000px), (max-height: 699px) {
+  .home-scroll .scene-stage {
+    min-height: auto;
+    padding: 60px 0;
+  }
+  .home-scroll .home-scene--hero .scene-stage {
+    min-height: calc(100svh - 108px);
+  }
+  .home-scroll [data-motion="mobile"] [data-scene-item] {
+    transition:
+      opacity 450ms ease,
+      translate 450ms ease;
+  }
+  .home-scroll [data-motion="mobile"] [data-entered="false"] {
+    opacity: 0.65;
+    translate: 0 8px;
+  }
+}
+@media (max-width: 700px) {
+  .home-scroll .scene-stage {
+    padding: 50px 0 60px;
+  }
+  .home-scroll .hero {
+    min-height: calc(100svh - 120px);
+    padding-top: clamp(20px, 5svh, 48px);
+    padding-bottom: 32px;
+  }
+  .home-scroll .hero-image {
+    margin-top: 30px;
+  }
+  .home-scroll .hero-image .photo {
+    height: clamp(180px, 30svh, 285px);
+  }
+  .home-scroll .hero .scroll-cue {
+    bottom: calc(-30svh - 26px);
+  }
+  .home-scroll .home-scene--hero .scene-stage {
+    min-height: calc(100svh - 120px);
+  }
+}
+
+/* Focusing a link reveals its whole scene, so keyboard exploration never
+   lands on transparent content. Without JS all content is already visible. */
+.home-scroll .home-scene:focus-within [data-scene-item],
+.home-scroll .home-scene:focus-within .hero-copy {
+  opacity: 1;
+  translate: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .home-scroll .home-scene[data-motion] {
+    min-height: auto;
+  }
+  .home-scroll .scene-stage {
+    position: static;
+  }
+  .home-scroll [data-scene-item],
+  .home-scroll .hero-copy {
+    opacity: 1;
+    translate: none;
+    transition: none;
+  }
+  .home-scroll .hero-image img,
+  .home-scroll .practice-grid > .photo img,
+  .home-scroll .hero-sun {
+    scale: none;
+    translate: none;
+  }
+}
